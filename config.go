@@ -24,13 +24,17 @@ var urls = []string{
 	"https://www.onliner.by",
 }
 
-func GetConfig(arr []string) ([]Config, error) {
-	for _, url := range arr {
+func GetConfig(arr *[]string) (*[]Config, error) {
+	for _, url := range *arr {
 		resp, err := http.Get(url)
 		if err != nil {
 			fmt.Println(err)
 		}
-		resp.Body.Close()
+
+		err = resp.Body.Close()
+		if err != nil {
+			return nil, err
+		}
 
 		c := Config{
 			URLs: resp.Status,
@@ -40,5 +44,5 @@ func GetConfig(arr []string) ([]Config, error) {
 		}
 		ConfigList = append(ConfigList, c)
 	}
-	return ConfigList, nil
+	return &ConfigList, nil
 }
