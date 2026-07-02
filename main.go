@@ -3,9 +3,9 @@ package main
 import "fmt"
 
 func main() {
-	cfg, err := GetConfig(&urls)
+	data, err := LoadConfig("config.json")
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
-	fmt.Println(cfg)
+	fmt.Printf("%+v\n", data)
 }

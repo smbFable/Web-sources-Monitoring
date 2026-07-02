@@ -1,0 +1,13 @@
+{
+  "urls": [
+    "https://google.com",
+    "https://onliner.by",
+    "https://facebook.com",
+    "https://twitter.com",
+    "https://go.dev"
+  ],
+
+  "Interval": 60,
+  "token": "aboba",
+  "chat_id": "228huy"
+}
