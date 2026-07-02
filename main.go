@@ -1,11 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 func main() {
-	data, err := LoadConfig("config.json")
+	cfg, err := LoadConfig("config.json")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	fmt.Printf("%+v\n", data)
+	pr, err := SiteReliability(cfg.URLs[0])
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(pr)
 }
