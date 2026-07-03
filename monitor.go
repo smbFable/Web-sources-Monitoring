@@ -16,13 +16,13 @@ func SiteReliability(url string) (PingResult, error) {
 	start := time.Now()
 	data, err := http.Get(url)
 	if err != nil {
-		return PingResult{}, err
+		return PingResult{URL: url}, err
 	}
+	defer data.Body.Close()
 	isup := false
 	if data.StatusCode == 200 {
 		isup = true
 	}
-	data.Body.Close()
 
 	p := PingResult{
 		URL:      url,
@@ -30,5 +30,5 @@ func SiteReliability(url string) (PingResult, error) {
 		PingTime: time.Since(start),
 		Status:   data.Status,
 	}
-	return p, err
+	return p, nil
 }
