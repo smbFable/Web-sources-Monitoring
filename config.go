@@ -20,7 +20,6 @@ func LoadConfig(name string) (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	err = json.Unmarshal(jsonfiledata, cfg)
 	if err != nil {
 		fmt.Println(err)

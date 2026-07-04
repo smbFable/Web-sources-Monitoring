@@ -7,8 +7,6 @@
     "https://go.dev",
     "https://bsu.by",
     "https://fpmi.bsu.by",
-    "https://barsu.by",
-    "https://bru.by",
     "https://yandex.by",
     "https://yandex.by/maps",
     "https://ru.wikipedia.org",
@@ -18,8 +16,7 @@
     "https://www.kufar.by",
     "https://av.by",
     "https://www.drom.ru",
-    "https://www.wildberries.by",
-    "https://ozon.by"
+    "https://www.wildberries.by"
   ],
 
   "Interval": 60,
