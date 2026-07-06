@@ -12,11 +12,7 @@ type PingResult struct {
 	Status   string
 }
 
-func SiteReliability(url string, PR chan PingResult) {
-	client := http.Client{
-		Timeout: time.Second * 3,
-	}
-
+func SiteReliability(client *http.Client, url string, PR chan PingResult) {
 	start := time.Now()
 	data, err := client.Get(url)
 	if err != nil {
