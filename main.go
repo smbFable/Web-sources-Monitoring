@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 
@@ -15,28 +14,18 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for index, url := range cfg.URLs {
-		pr, err := SiteReliability(url)
-		if err != nil {
-			fmt.Println(index+1, ": ", pr)
-			continue
-		}
-		fmt.Println(index+1, ": ", pr)
+	urlchan := make(chan PingResult, len(cfg.URLs))
+	arrchan := make([]PingResult, 0)
+
+	for _, url := range cfg.URLs {
+		go SiteReliability(url, urlchan)
 	}
 
-	database, err := sql.Open("sqlite", "./Web.db")
-	if err != nil {
-		fmt.Println(err)
+	for i := 0; i < len(cfg.URLs); i++ {
+		arrchan = append(arrchan, <-urlchan)
 	}
-	table, err := database.Prepare("CREATE TABLE IF NOT EXISTS WEBdb (URL TEXT, IsUp INTEGER, Ping INTEGER, Status TEXT)")
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer database.Close()
 
-	_, err = table.Exec()
-	if err != nil {
-		fmt.Println(err)
+	for i := 0; i < len(cfg.URLs); i++ {
+		fmt.Println(i+1, ": ", arrchan[i])
 	}
-	fmt.Println("Таблица создана!")
 }

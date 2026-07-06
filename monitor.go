@@ -12,23 +12,29 @@ type PingResult struct {
 	Status   string
 }
 
-func SiteReliability(url string) (PingResult, error) {
+func SiteReliability(url string, PR chan PingResult) {
+	client := http.Client{
+		Timeout: time.Second * 3,
+	}
+
 	start := time.Now()
-	data, err := http.Get(url)
+	data, err := client.Get(url)
 	if err != nil {
-		return PingResult{URL: url}, err
+		PR <- PingResult{
+			URL:      url,
+			IsUp:     false,
+			PingTime: time.Since(start),
+			Status:   "TIMEOUT/ERROR",
+		}
+		return
 	}
 	defer data.Body.Close()
-	isup := false
-	if data.StatusCode == 200 {
-		isup = true
-	}
 
 	p := PingResult{
 		URL:      url,
-		IsUp:     isup,
+		IsUp:     data.StatusCode == 200,
 		PingTime: time.Since(start),
 		Status:   data.Status,
 	}
-	return p, nil
+	PR <- p
 }
